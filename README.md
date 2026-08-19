@@ -11,3 +11,8 @@ If you run into trouble, help is available in [our forum](https://forum.defold.c
 Happy Defolding!
 
 ---
+## Tooling
+
+- `tools/defold.sh` - launches the Defold editor at a chosen UI scale
+  (`tools/defold.sh --scale 165%`), working around JavaFX ignoring the desktop
+  scale on Linux. Defaults to 200%, or `$DEFOLD_SCALE`.

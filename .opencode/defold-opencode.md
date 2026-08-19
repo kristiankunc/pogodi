@@ -22,6 +22,9 @@ preferred over ad-hoc curl:
 - `/preview <resource> [width] [height]` - render a scene resource to PNG for visual checks
 - `/docs <topic>`, `/examples <topic>` - live indexes from defold.com/llms/*
 
+If the editor is not running, it can be started with `tools/defold.sh` (add
+`--port 8181` and the absolute path to `game.project` to open this project).
+
 Never read `.internal/editor.token` into a prompt, log or report, and ask before using
 `POST /eval`.
 
