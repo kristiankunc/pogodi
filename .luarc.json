@@ -1,0 +1,40 @@
+{
+  "runtime.version": "Lua 5.1",
+  "workspace.library": [
+    "~/.local/share/defold-annotations/1.13.1",
+    ".deps"
+  ],
+  "workspace.useGitIgnore": false,
+  "workspace.ignoreDir": [
+    "build",
+    ".internal",
+    ".git",
+    ".agents",
+    ".deps"
+  ],
+  "workspace.checkThirdParty": false,
+  "files.associations": {
+    "*.script": "lua",
+    "*.gui_script": "lua",
+    "*.render_script": "lua",
+    "*.editor_script": "lua"
+  },
+  "diagnostics.libraryFiles": "Disable",
+  "diagnostics.disable": [
+    "lowercase-global",
+    "redefined-local"
+  ],
+  "diagnostics.unusedLocalExclude": [
+    "self",
+    "dt",
+    "sender",
+    "message",
+    "message_id",
+    "action",
+    "action_id",
+    "node",
+    "url"
+  ],
+  "completion.autoRequire": false,
+  "telemetry.enable": false
+}

@@ -1,0 +1,4 @@
+# Ripgrep (used by opencode/Claude Code search): re-include .deps, which
+# .gitignore excludes. Agents need it as read-only dependency context.
+!.deps
+!.deps/**
