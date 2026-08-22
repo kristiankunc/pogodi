@@ -1,0 +1,23 @@
+go.property("spawn_position", vmath.vector3(0, 0, 0))
+go.property("target_position", vmath.vector3(0, 0, 0))
+go.property("roll_duration_ms", 1000)
+
+function init(self)
+	go.set_position(self.spawn_position)
+	self.elapsed = 0
+	self.roll_duration_seconds = self.roll_duration_ms / 1000
+end
+
+function update(self, dt)
+	self.elapsed = self.elapsed + dt
+	local progress = math.min(self.elapsed / self.roll_duration_seconds, 1.0)
+
+	local pos = go.get_position()
+	pos.x = self.spawn_position.x + (self.target_position.x - self.spawn_position.x) * progress
+	pos.y = self.spawn_position.y + (self.target_position.y - self.spawn_position.y) * progress
+	go.set_position(pos)
+
+	if progress >= 1.0 then
+		go.delete()
+	end
+end
