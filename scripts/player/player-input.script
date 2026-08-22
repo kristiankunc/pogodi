@@ -1,0 +1,51 @@
+local INPUT_KEYS = {
+	up = hash("up"),
+	down = hash("down"),
+	left = hash("left"),
+	right = hash("right"),
+}
+
+local CORNERS = {
+	nw = { x = -1, y = 1 },
+	ne = { x = 1, y = 1 },
+	sw = { x = -1, y = -1 },
+	se = { x = 1, y = -1 },
+}
+
+local POSITION_SCALING = 100
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.vertical = "n"
+	self.horizontal = "w"
+	self.origin = go.get_position()
+	update_position(self)
+end
+
+function on_input(self, action_id, action)
+	if not action.pressed then
+		return
+	end
+
+	if action_id == INPUT_KEYS.up then
+		self.vertical = "n"
+	elseif action_id == INPUT_KEYS.down then
+		self.vertical = "s"
+	elseif action_id == INPUT_KEYS.left then
+		self.horizontal = "w"
+	elseif action_id == INPUT_KEYS.right then
+		self.horizontal = "e"
+	else
+		return
+	end
+
+	update_position(self)
+end
+
+function update_position(self)
+	local corner = CORNERS[self.vertical .. self.horizontal]
+	local pos = go.get_position()
+	pos.x = self.origin.x + corner.x * POSITION_SCALING
+	pos.y = self.origin.y + corner.y * POSITION_SCALING
+	go.set_position(pos)
+end

@@ -9,6 +9,9 @@ width = 960
 height = 640
 high_dpi = 1
 
+[input]
+game_binding = /input/game.input_bindingc
+
 [android]
 input_method = HiddenInputField
 
