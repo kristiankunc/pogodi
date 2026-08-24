@@ -31,11 +31,6 @@ nodes {
     x: 200.0
     y: 100.0
   }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
   type: TYPE_TEXT
   text: "Create lobby"
   font: "ibm_plex_mono"
@@ -71,11 +66,6 @@ nodes {
     x: 200.0
     y: 100.0
   }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
   type: TYPE_TEXT
   text: "Join lobby"
   font: "ibm_plex_mono"
@@ -110,11 +100,6 @@ nodes {
     x: 400.0
     y: 100.0
   }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
   type: TYPE_TEXT
   font: "ibm_plex_mono"
   id: "lobby_code_input_text"
@@ -129,11 +114,6 @@ nodes {
   size {
     x: 500.0
     y: 40.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
   type: TYPE_TEXT
   text: "Not connected"
@@ -150,11 +130,6 @@ nodes {
     x: 500.0
     y: 60.0
   }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
   type: TYPE_TEXT
   text: "LOBBY"
   font: "ibm_plex_mono"
@@ -169,11 +144,6 @@ nodes {
   size {
     x: 500.0
     y: 120.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
   type: TYPE_TEXT
   text: "----"
@@ -190,15 +160,46 @@ nodes {
     x: 500.0
     y: 40.0
   }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
   type: TYPE_TEXT
   text: "Waiting for opponent..."
   font: "ibm_plex_mono"
   id: "waiting_status"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 1903.0
+    y: 1060.0
+  }
+  size {
+    x: 12.0
+    y: 12.0
+  }
+  color {
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_BOX
+  id: "health_dot"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 1852.0
+    y: 1060.0
+  }
+  scale {
+    x: 0.3
+    y: 0.3
+  }
+  size {
+    x: 100.0
+    y: 40.0
+  }
+  type: TYPE_TEXT
+  text: "OFFLINE"
+  font: "ibm_plex_mono"
+  id: "health_text"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"

@@ -15,6 +15,8 @@ local COLOR_PLACEHOLDER = dcolors.hex_to_rgba("808080FF")
 local COLOR_BG_NORMAL = dcolors.hex_to_rgba("292929FF")
 local COLOR_BG_FOCUSED = dcolors.hex_to_rgba("3A5A80FF")
 local COLOR_STATUS = dcolors.hex_to_rgba("FFFFFFFF")
+local COLOR_HEALTH_ONLINE = dcolors.hex_to_rgba("00FF00FF")
+local COLOR_HEALTH_OFFLINE = dcolors.hex_to_rgba("FF0000FF")
 
 local STATUS_NODE = hash("status_text")
 local CREATE_BUTTON = hash("create_lobby_button")
@@ -25,6 +27,8 @@ local WAITING_TITLE = hash("waiting_title")
 local WAITING_CODE = hash("waiting_code")
 local WAITING_STATUS = hash("waiting_status")
 local GAME_PROXY = "#game_proxy"
+local HEALTH_DOT = hash("health_dot")
+local HEALTH_TEXT = hash("health_text")
 
 local function set_status(self, text)
 	gui.set_text(self.status_node, text)
@@ -56,6 +60,20 @@ local function transition_to_game(self)
 	msg.post(GAME_PROXY, "load")
 end
 
+local function update_health(self)
+	local online = net.is_connected()
+	if online ~= self.health_online then
+		self.health_online = online
+		if online then
+			gui.set_color(self.health_dot, COLOR_HEALTH_ONLINE)
+			gui.set_text(self.health_text, "ONLINE")
+		else
+			gui.set_color(self.health_dot, COLOR_HEALTH_OFFLINE)
+			gui.set_text(self.health_text, "OFFLINE")
+		end
+	end
+end
+
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
@@ -73,6 +91,11 @@ function init(self)
 	self.waiting_code = gui.get_node(WAITING_CODE)
 	self.waiting_status = gui.get_node(WAITING_STATUS)
 	set_waiting_visible(self, false)
+
+	self.health_dot = gui.get_node(HEALTH_DOT)
+	self.health_text = gui.get_node(HEALTH_TEXT)
+	self.health_online = nil
+	update_health(self)
 
 	gooey.input("lobby_code_input_text", gui.KEYBOARD_TYPE_DEFAULT, nil, nil, INPUT_CONFIG)
 
@@ -111,6 +134,7 @@ end
 
 function update(self, dt)
 	net.poll()
+	update_health(self)
 end
 
 function on_message(self, message_id, message, sender)
