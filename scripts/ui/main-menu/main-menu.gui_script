@@ -1,5 +1,6 @@
 local gooey = require("gooey.gooey")
 local dcolors = require("dcolors.dcolors")
+local net = require("scripts.network.net")
 
 local INPUT_CONFIG = {
 	max_length = 4,
@@ -8,30 +9,114 @@ local INPUT_CONFIG = {
 	allowed_characters = "[%a]",
 }
 
-local COLOR_TEXT = dcolors.hex_to_rgba("000000FF")
+local COLOR_TEXT = dcolors.hex_to_rgba("FFFFFFFF")
 local COLOR_PLACEHOLDER = dcolors.hex_to_rgba("808080FF")
-local COLOR_BG_NORMAL = dcolors.hex_to_rgba("E6E6E6FF")
-local COLOR_BG_FOCUSED = dcolors.hex_to_rgba("A6D9FFFF")
+local COLOR_BG_NORMAL = dcolors.hex_to_rgba("292929FF")
+local COLOR_BG_FOCUSED = dcolors.hex_to_rgba("3A5A80FF")
+local COLOR_STATUS = dcolors.hex_to_rgba("FFFFFFFF")
 
+local STATUS_NODE = hash("status_text")
+local CREATE_BUTTON = hash("create_lobby_button")
+local JOIN_BUTTON = hash("join_lobby_button")
+local INPUT_BG = hash("lobby_code_input_bg")
+local INPUT_TEXT = hash("lobby_code_input_text")
+local WAITING_TITLE = hash("waiting_title")
+local WAITING_CODE = hash("waiting_code")
+local WAITING_STATUS = hash("waiting_status")
+
+local function set_status(self, text)
+	gui.set_text(self.status_node, text)
+end
+
+local function set_menu_visible(self, visible)
+	gui.set_enabled(self.create_button, visible)
+	gui.set_enabled(self.join_button, visible)
+	gui.set_enabled(self.input_bg, visible)
+	gui.set_enabled(self.input_text, visible)
+	gui.set_enabled(self.status_node, visible)
+end
+
+local function set_waiting_visible(self, visible)
+	gui.set_enabled(self.waiting_title, visible)
+	gui.set_enabled(self.waiting_code, visible)
+	gui.set_enabled(self.waiting_status, visible)
+end
+
+local function show_waiting(self, lobby_id)
+	gui.set_text(self.waiting_code, lobby_id)
+	set_menu_visible(self, false)
+	set_waiting_visible(self, true)
+end
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
 
 	self.text = ""
-	self.input_bg = gui.get_node(hash("lobby_code_input_bg"))
+	self.status_node = gui.get_node(STATUS_NODE)
+	gui.set_color(self.status_node, COLOR_STATUS)
+
+	self.create_button = gui.get_node(CREATE_BUTTON)
+	self.join_button = gui.get_node(JOIN_BUTTON)
+	self.input_bg = gui.get_node(INPUT_BG)
+	self.input_text = gui.get_node(INPUT_TEXT)
 	gui.set_color(self.input_bg, COLOR_BG_NORMAL)
 
+	self.waiting_title = gui.get_node(WAITING_TITLE)
+	self.waiting_code = gui.get_node(WAITING_CODE)
+	self.waiting_status = gui.get_node(WAITING_STATUS)
+	set_waiting_visible(self, false)
+
 	gooey.input("lobby_code_input_text", gui.KEYBOARD_TYPE_DEFAULT, nil, nil, INPUT_CONFIG)
+
+	net.on("lobby_created", function(data)
+		print("Lobby created: " .. data.lobby_id)
+		show_waiting(self, data.lobby_id)
+	end)
+
+	net.on("lobby_joined", function(data)
+		local count = data.player_count or 1
+		print("Lobby joined: " .. data.lobby_id .. " (count: " .. count .. ")")
+		show_waiting(self, data.lobby_id)
+		if count >= 2 then
+			gui.set_text(self.waiting_status, "Player joined (2/2)")
+		end
+	end)
+
+	net.on("player_joined", function(data)
+		print("Player joined: " .. data.sid .. " (count: " .. data.player_count .. ")")
+		gui.set_text(self.waiting_status, "Player joined (" .. data.player_count .. "/2)")
+	end)
+
+	net.on("error", function(data)
+		print("Error: " .. data.message)
+		set_status(self, data.message)
+	end)
+
+	net.connect()
+end
+
+function update(self, dt)
+	net.poll()
 end
 
 function on_input(self, action_id, action)
 	local group = gooey.group("main_menu", action_id, action, function()
 		gooey.button("create_lobby_button", action_id, action, function(button)
-			print("Create lobby clicked")
+			if button.clicked then
+				print("Create lobby clicked")
+				net.send("create_lobby", {})
+			end
 		end)
 
 		gooey.button("join_lobby_button", action_id, action, function(button)
-			print("Join lobby clicked")
+			if button.clicked then
+				print("Join lobby clicked")
+				if self.text ~= "" then
+					net.send("join_lobby", { lobby_id = self.text })
+				else
+					set_status(self, "Enter a lobby code first")
+				end
+			end
 		end)
 
 		gooey.input("lobby_code_input_text", gui.KEYBOARD_TYPE_DEFAULT, action_id, action, INPUT_CONFIG, function(input)

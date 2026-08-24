@@ -5,12 +5,17 @@ fonts {
 }
 nodes {
   position {
-    x: 501.0
-    y: 455.0
+    x: 960.0
+    y: 650.0
   }
   size {
     x: 200.0
     y: 100.0
+  }
+  color {
+    x: 0.16
+    y: 0.16
+    z: 0.16
   }
   type: TYPE_BOX
   id: "create_lobby_button"
@@ -27,9 +32,9 @@ nodes {
     y: 100.0
   }
   color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 1.0
+    y: 1.0
+    z: 1.0
   }
   type: TYPE_TEXT
   text: "Create lobby"
@@ -40,12 +45,17 @@ nodes {
 }
 nodes {
   position {
-    x: 501.0
-    y: 181.0
+    x: 960.0
+    y: 330.0
   }
   size {
     x: 200.0
     y: 100.0
+  }
+  color {
+    x: 0.16
+    y: 0.16
+    z: 0.16
   }
   type: TYPE_BOX
   id: "join_lobby_button"
@@ -62,9 +72,9 @@ nodes {
     y: 100.0
   }
   color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 1.0
+    y: 1.0
+    z: 1.0
   }
   type: TYPE_TEXT
   text: "Join lobby"
@@ -75,12 +85,17 @@ nodes {
 }
 nodes {
   position {
-    x: 500.0
-    y: 309.0
+    x: 960.0
+    y: 460.0
   }
   size {
     x: 200.0
     y: 50.0
+  }
+  color {
+    x: 0.16
+    y: 0.16
+    z: 0.16
   }
   type: TYPE_BOX
   id: "lobby_code_input_bg"
@@ -96,14 +111,94 @@ nodes {
     y: 100.0
   }
   color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 1.0
+    y: 1.0
+    z: 1.0
   }
   type: TYPE_TEXT
   font: "ibm_plex_mono"
   id: "lobby_code_input_text"
   parent: "lobby_code_input_bg"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 960.0
+    y: 180.0
+  }
+  size {
+    x: 500.0
+    y: 40.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "Not connected"
+  font: "ibm_plex_mono"
+  id: "status_text"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 960.0
+    y: 720.0
+  }
+  size {
+    x: 500.0
+    y: 60.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "LOBBY"
+  font: "ibm_plex_mono"
+  id: "waiting_title"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 960.0
+    y: 560.0
+  }
+  size {
+    x: 500.0
+    y: 120.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "----"
+  font: "ibm_plex_mono"
+  id: "waiting_code"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 960.0
+    y: 440.0
+  }
+  size {
+    x: 500.0
+    y: 40.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "Waiting for opponent..."
+  font: "ibm_plex_mono"
+  id: "waiting_status"
   inherit_alpha: true
 }
 material: "/builtins/materials/gui.material"
