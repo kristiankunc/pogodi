@@ -25,4 +25,5 @@ scale_mode = stretch
 [project]
 title = nu-pogodi
 dependencies#0 = https://github.com/britzl/gooey/archive/master.zip
+dependencies#1 = https://github.com/whiteboxdev/library-defold-colors/archive/master.zip
 

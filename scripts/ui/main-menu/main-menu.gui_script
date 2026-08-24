@@ -1,18 +1,5 @@
-local gooey = require "gooey.gooey"
-
-local function hex_color(hex)
-	local clean = hex:gsub("#", "")
-	local a = 1.0
-	if #clean == 8 then
-		a = tonumber(clean:sub(7, 8), 16) / 255
-	end
-	return vmath.vector4(
-		tonumber(clean:sub(1, 2), 16) / 255,
-		tonumber(clean:sub(3, 4), 16) / 255,
-		tonumber(clean:sub(5, 6), 16) / 255,
-		a
-	)
-end
+local gooey = require("gooey.gooey")
+local dcolors = require("dcolors.dcolors")
 
 local INPUT_CONFIG = {
 	max_length = 4,
@@ -21,10 +8,10 @@ local INPUT_CONFIG = {
 	allowed_characters = "[%a]",
 }
 
-local COLOR_TEXT = hex_color("#000000")
-local COLOR_PLACEHOLDER = hex_color("#808080")
-local COLOR_BG_NORMAL = hex_color("#E6E6E6")
-local COLOR_BG_FOCUSED = hex_color("#A6D9FF")
+local COLOR_TEXT = dcolors.hex_to_rgba("000000FF")
+local COLOR_PLACEHOLDER = dcolors.hex_to_rgba("808080FF")
+local COLOR_BG_NORMAL = dcolors.hex_to_rgba("E6E6E6FF")
+local COLOR_BG_FOCUSED = dcolors.hex_to_rgba("A6D9FFFF")
 
 
 function init(self)
