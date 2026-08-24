@@ -1,5 +1,5 @@
 [bootstrap]
-main_collection = /main/main.collectionc
+main_collection = /main/collections/main-menu.collectionc
 
 [script]
 shared_state = 1
@@ -24,4 +24,5 @@ scale_mode = stretch
 
 [project]
 title = nu-pogodi
+dependencies#0 = https://github.com/britzl/gooey/archive/master.zip
 

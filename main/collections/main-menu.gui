@@ -1,0 +1,110 @@
+script: "/scripts/ui/main-menu/main-menu.gui_script"
+fonts {
+  name: "ibm_plex_mono"
+  font: "/assets/fonts/IBMPlexMono-Medium.font"
+}
+nodes {
+  position {
+    x: 501.0
+    y: 455.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "create_lobby_button"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Create lobby"
+  font: "ibm_plex_mono"
+  id: "text"
+  parent: "create_lobby_button"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 501.0
+    y: 181.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "join_lobby_button"
+  inherit_alpha: true
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "Join lobby"
+  font: "ibm_plex_mono"
+  id: "text1"
+  parent: "join_lobby_button"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 500.0
+    y: 309.0
+  }
+  size {
+    x: 200.0
+    y: 50.0
+  }
+  type: TYPE_BOX
+  id: "lobby_code_input_bg"
+  inherit_alpha: true
+}
+nodes {
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  size {
+    x: 400.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  font: "ibm_plex_mono"
+  id: "lobby_code_input_text"
+  parent: "lobby_code_input_bg"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

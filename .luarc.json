@@ -2,7 +2,7 @@
 	"runtime.version": "Lua 5.1",
 	"workspace.library": [".deps/defold-annotations"],
 	"workspace.useGitIgnore": false,
-	"workspace.ignoreDir": ["build", ".internal", ".git", ".agents", ".deps"],
+	"workspace.ignoreDir": ["build", ".internal", ".git", ".agents"],
 	"workspace.checkThirdParty": false,
 	"files.associations": {
 		"*.script": "lua",
