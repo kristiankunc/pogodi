@@ -21,7 +21,8 @@ jobs:
             platform: wasm-web
             type: dir
           - name: android
-            platform: armv7-android,arm64-android
+            platform: armv7-android
+            architectures: armv7-android,arm64-android
             bundle_format: apk
             type: file
 
@@ -51,10 +52,15 @@ jobs:
           if [ -n "${{ matrix.bundle_format }}" ]; then
             BF="--bundle-format ${{ matrix.bundle_format }}"
           fi
+          ARCH=""
+          if [ -n "${{ matrix.architectures }}" ]; then
+            ARCH="--architectures ${{ matrix.architectures }}"
+          fi
           java -jar bob.jar \
             --root . \
             --archive \
             --platform "${{ matrix.platform }}" \
+            $ARCH \
             $BF \
             --variant debug \
             --bundle-output "dist/${{ matrix.name }}" \
