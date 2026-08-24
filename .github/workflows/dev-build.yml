@@ -28,10 +28,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up OpenJDK 25
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "25"
@@ -66,16 +68,21 @@ jobs:
             --bundle-output "dist/${{ matrix.name }}" \
             resolve distclean build bundle
 
-      - name: Zip bundle folder
+      - name: Collect folder bundle
         if: matrix.type == 'dir'
         run: |
           cd "dist/${{ matrix.name }}"
           zip -r "../nu-pogodi-${{ matrix.name }}.zip" .
+
+      - name: Collect apk
+        if: matrix.type == 'file'
+        run: |
+          mv "dist/${{ matrix.name }}"/*/*.apk "dist/nu-pogodi-${{ matrix.name }}.apk"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: nu-pogodi-${{ matrix.name }}
           path: |
-            dist/${{ matrix.name }}/*.zip
-            dist/${{ matrix.name }}/*.apk
+            dist/*.zip
+            dist/*.apk
