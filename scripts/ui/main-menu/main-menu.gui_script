@@ -1,6 +1,7 @@
 local gooey = require("gooey.gooey")
 local dcolors = require("dcolors.dcolors")
 local net = require("scripts.network.net")
+local net_state = require("scripts.network.net_state")
 
 local INPUT_CONFIG = {
 	max_length = 4,
@@ -23,6 +24,7 @@ local INPUT_TEXT = hash("lobby_code_input_text")
 local WAITING_TITLE = hash("waiting_title")
 local WAITING_CODE = hash("waiting_code")
 local WAITING_STATUS = hash("waiting_status")
+local GAME_PROXY = "#game_proxy"
 
 local function set_status(self, text)
 	gui.set_text(self.status_node, text)
@@ -46,6 +48,12 @@ local function show_waiting(self, lobby_id)
 	gui.set_text(self.waiting_code, lobby_id)
 	set_menu_visible(self, false)
 	set_waiting_visible(self, true)
+end
+
+local function transition_to_game(self)
+	set_menu_visible(self, false)
+	set_waiting_visible(self, false)
+	msg.post(GAME_PROXY, "load")
 end
 
 function init(self)
@@ -87,6 +95,12 @@ function init(self)
 		gui.set_text(self.waiting_status, "Player joined (" .. data.player_count .. "/2)")
 	end)
 
+	net.on("game_starting", function(data)
+		print("Game starting at: " .. data.start_at)
+		net_state.start_at = data.start_at
+		transition_to_game(self)
+	end)
+
 	net.on("error", function(data)
 		print("Error: " .. data.message)
 		set_status(self, data.message)
@@ -97,6 +111,12 @@ end
 
 function update(self, dt)
 	net.poll()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		msg.post(GAME_PROXY, "enable")
+	end
 end
 
 function on_input(self, action_id, action)

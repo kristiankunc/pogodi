@@ -1,0 +1,12 @@
+local COUNTDOWN_NODE = hash("countdown_text")
+local SET_COUNTDOWN = hash("set_countdown")
+
+function init(self)
+	self.node = gui.get_node(COUNTDOWN_NODE)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == SET_COUNTDOWN then
+		gui.set_text(self.node, message.text)
+	end
+end

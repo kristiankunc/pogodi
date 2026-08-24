@@ -6,5 +6,10 @@ embedded_instances {
   "  id: \"main-menu\"\n"
   "  component: \"/main/collections/main-menu.gui\"\n"
   "}\n"
+  "embedded_components {\n"
+  "  id: \"game_proxy\"\n"
+  "  type: \"collectionproxy\"\n"
+  "  data: \"collection: \\\"/main/collections/main.collection\\\"\\n\"\n"
+  "}\n"
   ""
 }

@@ -1,0 +1,28 @@
+local net = require("scripts.network.net")
+local net_state = require("scripts.network.net_state")
+
+local SET_COUNTDOWN = hash("set_countdown")
+
+function init(self)
+	self.start_at = net_state.start_at
+	self.done = false
+	net.on("game_started", function(data)
+		print("game_started received")
+	end)
+end
+
+function update(self, dt)
+	net.poll()
+	if self.start_at == nil or self.done then
+		return
+	end
+
+	local remaining = self.start_at - os.time()
+	local text = "GO"
+	if remaining > 0 then
+		text = tostring(math.ceil(remaining))
+	else
+		self.done = true
+	end
+	msg.post("#countdown", SET_COUNTDOWN, { text = text })
+end
