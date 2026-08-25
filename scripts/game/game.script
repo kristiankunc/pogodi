@@ -55,7 +55,7 @@ function init(self)
 	end)
 end
 
-function update(self, dt)
+function update(self, _dt)
 	if self.playing and not net.is_connected() then
 		print("game: connection lost")
 		handle_connection_lost(self)
@@ -64,17 +64,17 @@ function update(self, dt)
 	update_countdown(self)
 end
 
-function on_message(self, message_id, message)
+function on_message(_self, message_id, message)
 	if message_id == NET_EVENT then
 		net.handle(message.event, message.payload)
 	end
 end
 
-function final(self)
+function final(_self)
 	net.clear()
 end
 
-function on_input(self, action_id, action)
+function on_input(self, _action_id, action)
 	if not action.pressed or not self.result_shown then
 		return
 	end
@@ -128,11 +128,8 @@ function handle_egg_spawned(self, data)
 	local corner = board.SERVER_POSITION_TO_CORNER[position]
 	local target_position = board.position(self.origin, corner)
 	local side = board.OFFSETS[corner].x
-	local spawn_position = vmath.vector3(
-		target_position.x + POSITION_OFFSET.x * side,
-		target_position.y + POSITION_OFFSET.y,
-		0
-	)
+	local spawn_position =
+		vmath.vector3(target_position.x + POSITION_OFFSET.x * side, target_position.y + POSITION_OFFSET.y, 0)
 	factory.create("#egg_factory", nil, nil, {
 		spawn_position = spawn_position,
 		target_position = target_position,

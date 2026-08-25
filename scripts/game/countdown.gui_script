@@ -29,7 +29,10 @@ function on_message(self, message_id, message)
 		gui.set_text(self.rival_lives, "RIVAL " .. tostring(message.rival))
 	elseif message_id == SHOW_RESULT then
 		gui.set_text(self.result_title, message.title)
-		gui.set_text(self.result_subtitle, "YOU " .. tostring(message.own_lives) .. " - " .. tostring(message.rival_lives) .. " RIVAL")
+		gui.set_text(
+			self.result_subtitle,
+			"YOU " .. tostring(message.own_lives) .. " - " .. tostring(message.rival_lives) .. " RIVAL"
+		)
 		gui.set_enabled(self.result_title, true)
 		gui.set_enabled(self.result_subtitle, true)
 		gui.set_enabled(self.result_hint, true)
