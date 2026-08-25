@@ -5,7 +5,7 @@ function init(self)
 	self.node = gui.get_node(COUNTDOWN_NODE)
 end
 
-function on_message(self, message_id, message, sender)
+function on_message(self, message_id, message)
 	if message_id == SET_COUNTDOWN then
 		gui.set_text(self.node, message.text)
 	end

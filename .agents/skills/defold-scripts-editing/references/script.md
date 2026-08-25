@@ -128,4 +128,3 @@ components {
 2. `.go` file override (`PropertyDesc` in `ComponentDesc`) — medium
 3. `.collection` file override (`ComponentPropertyDesc` in `InstanceDesc` / `EmbeddedInstanceDesc`) — high
 4. `factory.create()` / `collectionfactory.create()` properties table — highest
-

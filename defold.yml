@@ -1,0 +1,49 @@
+base: lua51
+
+globals:
+  hash:
+    any: true
+  go:
+    any: true
+  gui:
+    any: true
+  vmath:
+    any: true
+  sys:
+    any: true
+  sound:
+    any: true
+  sprite:
+    any: true
+  factory:
+    any: true
+  collectionfactory:
+    any: true
+  particlefx:
+    any: true
+  physics:
+    any: true
+  render:
+    any: true
+  resource:
+    any: true
+  timer:
+    any: true
+  window:
+    any: true
+  json:
+    any: true
+  msg:
+    any: true
+  init:
+    any: true
+  final:
+    any: true
+  update:
+    any: true
+  on_message:
+    any: true
+  on_input:
+    any: true
+  on_reload:
+    any: true

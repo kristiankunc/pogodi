@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # Usage: tools/defold.sh [-s|--scale 1.65|165%|192dpi] [editor args...]
 set -e
 

@@ -43,4 +43,3 @@ From the GUI script, address game objects:
 ```lua
 msg.post("/player#script", "heal", { amount = 10 })
 ```
-

@@ -16,15 +16,13 @@ function update(self, dt)
 	end
 end
 
+-- selene: allow(unused_variable) -- called from update() above, defined after due to Defold callback ordering
 function spawn_egg(self)
 	local corner = board.CORNER_KEYS[math.random(#board.CORNER_KEYS)]
 	local target_position = board.position(self.origin, corner)
 	local side = board.OFFSETS[corner].x
-	local spawn_position = vmath.vector3(
-		target_position.x + POSITION_OFFSET.x * side,
-		target_position.y + POSITION_OFFSET.y,
-		0
-	)
+	local spawn_position =
+		vmath.vector3(target_position.x + POSITION_OFFSET.x * side, target_position.y + POSITION_OFFSET.y, 0)
 	local roll_duration_ms = math.random(1000, 3000)
 	factory.create("#egg_factory", nil, nil, {
 		spawn_position = spawn_position,

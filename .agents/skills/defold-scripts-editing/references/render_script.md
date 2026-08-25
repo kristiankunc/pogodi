@@ -37,4 +37,3 @@ The `.render` file is set in `game.project`:
 [bootstrap]
 render = /render/my.render
 ```
-

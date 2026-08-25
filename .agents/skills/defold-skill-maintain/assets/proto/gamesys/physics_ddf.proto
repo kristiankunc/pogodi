@@ -452,7 +452,7 @@ message ContactPoint
  */
 // CAUTION: If you change this, you need to change the Push-function in script_physics.cpp!
 message ContactPointEvent
-{   
+{
     required ContactPoint   a                         = 1;
     required ContactPoint   b                         = 2;
     required float          distance                  = 3;

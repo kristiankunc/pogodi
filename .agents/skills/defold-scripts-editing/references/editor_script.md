@@ -208,4 +208,3 @@ end
 ## Editor scripts in libraries
 
 Editor scripts in libraries are automatically picked up. Lifecycle hooks cannot be in libraries — they must be in `/hooks.editor_script`. Library hooks should be exposed as Lua functions for the user to `require` in their own `/hooks.editor_script`.
-

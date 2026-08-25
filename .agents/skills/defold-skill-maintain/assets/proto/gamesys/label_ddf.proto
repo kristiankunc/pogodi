@@ -60,5 +60,3 @@ message SetText
 {
     required string text  = 1;
 }
-
-

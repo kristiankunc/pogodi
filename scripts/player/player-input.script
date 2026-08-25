@@ -35,6 +35,7 @@ function on_input(self, action_id, action)
 	update_position(self)
 end
 
+-- selene: allow(unused_variable) -- called from init()/on_input() above, defined after due to Defold callback ordering
 function update_position(self)
 	go.set_position(board.position(self.origin, self.vertical .. self.horizontal))
 end

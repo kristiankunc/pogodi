@@ -65,7 +65,7 @@ When writing performance-critical math code or optimizing vector/quaternion/matr
 - **GUI and game state separation**: GUI scripts (`.gui_script`) should NOT directly access game logic modules. All communication between game logic and UI must be message-based (`msg.post()`) to maintain clear separation of concerns. GUI should be purely data-driven, receiving all necessary data through messages and updating its display accordingly. This ensures UI remains decoupled from game implementation details.
 - **Script instance state**: In `.script`, `.gui_script`, `.render_script` files, store instance-specific state in the `self` table, NOT in local module variables. Local variables at the module level are shared across ALL instances of the script, which causes bugs when multiple instances exist. Use `self.my_variable` instead of `local my_variable`. Not applicable for local functions - keep them local. If you need to call local function that it's defined below, to use forward declarations or reorganize the functions.
 - **Local functions**: NEVER create local functions inside other functions. Local functions are only allowed at module scope. Anonymous lambda functions (inline callbacks) are acceptable.
-- **require**: 
+- **require**:
   - Always call `require` with parentheses: `require("module")`, NOT `require "module"`.
   - Use dot notation for module paths: `require("screens.flappy_bird.gameplay")`, NOT `require("/screens/flappy_bird/gameplay")`.
   - Module paths are relative to the project root and use dots (`.`) instead of slashes (`/`) as separators.

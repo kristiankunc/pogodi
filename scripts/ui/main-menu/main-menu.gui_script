@@ -132,12 +132,12 @@ function init(self)
 	net.connect()
 end
 
-function update(self, dt)
+function update(self)
 	net.poll()
 	update_health(self)
 end
 
-function on_message(self, message_id, message, sender)
+function on_message(_self, message_id)
 	if message_id == hash("proxy_loaded") then
 		msg.post(GAME_PROXY, "enable")
 	end

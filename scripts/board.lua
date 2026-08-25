@@ -21,11 +21,7 @@ M.OFFSETS = {
 ---@return vector3
 function M.position(origin, corner)
 	local offset = M.OFFSETS[corner]
-	return vmath.vector3(
-		origin.x + offset.x * M.SCALING,
-		origin.y + offset.y * M.SCALING,
-		origin.z
-	)
+	return vmath.vector3(origin.x + offset.x * M.SCALING, origin.y + offset.y * M.SCALING, origin.z)
 end
 
 return M

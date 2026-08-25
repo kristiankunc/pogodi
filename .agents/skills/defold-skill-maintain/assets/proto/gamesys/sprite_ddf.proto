@@ -134,4 +134,3 @@ message SetFlipVertical
 {
     required uint32 flip = 1;
 }
-
