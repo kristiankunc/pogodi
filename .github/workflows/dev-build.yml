@@ -86,3 +86,4 @@ jobs:
           path: |
             dist/*.zip
             dist/*.apk
+          retention-days: 7
