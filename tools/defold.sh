@@ -18,4 +18,6 @@ mkdir -p "$RUNDIR"
 cmp -s "$SRC/Defold" "$RUNDIR/Defold" || cp "$SRC/Defold" "$RUNDIR/Defold"
 ln -sfn "$SRC/packages" "$RUNDIR/packages"
 sed "s|^vmargs = |vmargs = -Dglass.gtk.uiScale=$SCALE,|" "$SRC/config" > "$RUNDIR/config"
-exec "$RUNDIR/Defold" "$@"
+nohup "$RUNDIR/Defold" "$@" >/dev/null 2>&1 &
+disown
+echo "Defold editor launched in background (pid $!)"
