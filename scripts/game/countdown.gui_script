@@ -1,12 +1,37 @@
 local COUNTDOWN_NODE = hash("countdown_text")
+local OWN_LIVES_NODE = hash("own_lives")
+local RIVAL_LIVES_NODE = hash("rival_lives")
+local RESULT_TITLE = hash("result_title")
+local RESULT_SUBTITLE = hash("result_subtitle")
+local RESULT_HINT = hash("result_hint")
+
 local SET_COUNTDOWN = hash("set_countdown")
+local SET_LIVES = hash("set_lives")
+local SHOW_RESULT = hash("show_result")
 
 function init(self)
 	self.node = gui.get_node(COUNTDOWN_NODE)
+	self.own_lives = gui.get_node(OWN_LIVES_NODE)
+	self.rival_lives = gui.get_node(RIVAL_LIVES_NODE)
+	self.result_title = gui.get_node(RESULT_TITLE)
+	self.result_subtitle = gui.get_node(RESULT_SUBTITLE)
+	self.result_hint = gui.get_node(RESULT_HINT)
+	gui.set_enabled(self.result_title, false)
+	gui.set_enabled(self.result_subtitle, false)
+	gui.set_enabled(self.result_hint, false)
 end
 
 function on_message(self, message_id, message)
 	if message_id == SET_COUNTDOWN then
 		gui.set_text(self.node, message.text)
+	elseif message_id == SET_LIVES then
+		gui.set_text(self.own_lives, "YOU " .. tostring(message.own))
+		gui.set_text(self.rival_lives, "RIVAL " .. tostring(message.rival))
+	elseif message_id == SHOW_RESULT then
+		gui.set_text(self.result_title, message.title)
+		gui.set_text(self.result_subtitle, "YOU " .. tostring(message.own_lives) .. " - " .. tostring(message.rival_lives) .. " RIVAL")
+		gui.set_enabled(self.result_title, true)
+		gui.set_enabled(self.result_subtitle, true)
+		gui.set_enabled(self.result_hint, true)
 	end
 end

@@ -1,4 +1,6 @@
 local board = require("scripts.board")
+local flash = require("scripts.player.flash")
+local net = require("scripts.network.net")
 
 local INPUT_KEYS = {
 	up = hash("up"),
@@ -6,36 +8,73 @@ local INPUT_KEYS = {
 	left = hash("left"),
 	right = hash("right"),
 }
+local SET_CORNER = hash("set_corner")
+local SET_RUNNING = hash("set_running")
+local FLASH = hash("flash")
+local COLOR_SELF = vmath.vector4(1, 1, 1, 1)
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+	self.origin = go.get_position()
 	self.vertical = "n"
 	self.horizontal = "w"
-	self.origin = go.get_position()
+	self.running = false
+	flash.init(self, "#player-label", COLOR_SELF)
 	update_position(self)
 end
 
+function update(self, dt)
+	flash.update(self, dt)
+end
+
 function on_input(self, action_id, action)
-	if not action.pressed then
+	if not action.pressed or not self.running then
 		return
 	end
 
+	local current_corner = self.vertical .. self.horizontal
+	local next_corner = current_corner
+
 	if action_id == INPUT_KEYS.up then
-		self.vertical = "n"
+		next_corner = "n" .. self.horizontal
 	elseif action_id == INPUT_KEYS.down then
-		self.vertical = "s"
+		next_corner = "s" .. self.horizontal
 	elseif action_id == INPUT_KEYS.left then
-		self.horizontal = "w"
+		next_corner = self.vertical .. "w"
 	elseif action_id == INPUT_KEYS.right then
-		self.horizontal = "e"
+		next_corner = self.vertical .. "e"
 	else
 		return
 	end
 
+	if next_corner == current_corner then
+		return
+	end
+
+	self.vertical = next_corner:sub(1, 1)
+	self.horizontal = next_corner:sub(2, 2)
+	update_position(self)
+	net.send("move", { position = board.CORNER_TO_SERVER_POSITION[next_corner] })
+end
+
+function on_message(self, message_id, message)
+	if message_id == SET_CORNER then
+		set_corner(self, message.corner)
+	elseif message_id == SET_RUNNING then
+		self.running = message.running
+	elseif message_id == FLASH then
+		flash.flash(self)
+	end
+end
+
+-- selene: allow(unused_variable) -- called from on_message() above, defined after due to Defold callback ordering
+function set_corner(self, corner)
+	self.vertical = corner:sub(1, 1)
+	self.horizontal = corner:sub(2, 2)
 	update_position(self)
 end
 
--- selene: allow(unused_variable) -- called from init()/on_input() above, defined after due to Defold callback ordering
+-- selene: allow(unused_variable) -- called from init()/on_input()/set_corner() above, defined after due to Defold callback ordering
 function update_position(self)
 	go.set_position(board.position(self.origin, self.vertical .. self.horizontal))
 end

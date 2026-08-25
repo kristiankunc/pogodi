@@ -24,5 +24,110 @@ nodes {
   inherit_alpha: true
   adjust_mode: ADJUST_MODE_ZOOM
 }
+nodes {
+  position {
+    x: 420.0
+    y: 1020.0
+  }
+  size {
+    x: 300.0
+    y: 40.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "YOU 3"
+  font: "ibm_plex_mono"
+  id: "own_lives"
+  inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+}
+nodes {
+  position {
+    x: 1500.0
+    y: 1020.0
+  }
+  size {
+    x: 300.0
+    y: 40.0
+  }
+  color {
+    x: 0.3
+    y: 0.5
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "RIVAL 3"
+  font: "ibm_plex_mono"
+  id: "rival_lives"
+  inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+}
+nodes {
+  position {
+    x: 960.0
+    y: 680.0
+  }
+  size {
+    x: 700.0
+    y: 100.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+  type: TYPE_TEXT
+  text: "YOU WIN"
+  font: "ibm_plex_mono"
+  id: "result_title"
+  inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+}
+nodes {
+  position {
+    x: 960.0
+    y: 570.0
+  }
+  size {
+    x: 700.0
+    y: 60.0
+  }
+  color {
+    x: 0.8
+    y: 0.8
+    z: 0.8
+  }
+  type: TYPE_TEXT
+  text: "YOU 0 - 0 RIVAL"
+  font: "ibm_plex_mono"
+  id: "result_subtitle"
+  inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+}
+nodes {
+  position {
+    x: 960.0
+    y: 460.0
+  }
+  size {
+    x: 500.0
+    y: 40.0
+  }
+  color {
+    x: 0.6
+    y: 0.6
+    z: 0.6
+  }
+  type: TYPE_TEXT
+  text: "PRESS ANY KEY"
+  font: "ibm_plex_mono"
+  id: "result_hint"
+  inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+}
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

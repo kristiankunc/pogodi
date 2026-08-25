@@ -129,6 +129,11 @@ function init(self)
 		set_status(self, data.message)
 	end)
 
+	net.on("welcome", function(data)
+		net_state.sid = data.sid
+		print("Connected as: " .. net_state.sid)
+	end)
+
 	net.connect()
 end
 
@@ -137,9 +142,19 @@ function update(self)
 	update_health(self)
 end
 
-function on_message(_self, message_id)
-	if message_id == hash("proxy_loaded") then
+function on_message(self, message_id, message)
+	if message_id == hash("net_event") then
+		net.handle(message.event, message.payload)
+	elseif message_id == hash("proxy_loaded") then
 		msg.post(GAME_PROXY, "enable")
+	elseif message_id == hash("return_to_menu") then
+		msg.post(GAME_PROXY, "disable")
+		msg.post(GAME_PROXY, "final")
+		msg.post(GAME_PROXY, "unload")
+		set_waiting_visible(self, false)
+		set_menu_visible(self, true)
+		gui.set_text(self.waiting_status, "Waiting for opponent...")
+		gui.set_text(self.status_node, "")
 	end
 end
 

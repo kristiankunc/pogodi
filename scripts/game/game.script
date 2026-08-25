@@ -1,22 +1,91 @@
+local board = require("scripts.board")
 local net = require("scripts.network.net")
 local net_state = require("scripts.network.net_state")
 
 local SET_COUNTDOWN = hash("set_countdown")
+local SET_CORNER = hash("set_corner")
+local SET_RUNNING = hash("set_running")
+local SET_LIVES = hash("set_lives")
+local SHOW_RESULT = hash("show_result")
+local FLASH = hash("flash")
+local RETURN_TO_MENU = hash("return_to_menu")
+local NET_EVENT = hash("net_event")
+
+local SELF_URL = "Player#player-input"
+local OPPONENT_URL = "Opponent#opponent"
+local COUNTDOWN_URL = "#countdown"
+local MENU_URL = "main-menu:/ui#main-menu"
+
+local POSITION_OFFSET = vmath.vector3(120, 40, 0)
 
 function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.origin = go.get_position()
+	self.sid = net_state.sid
+	self.opponent_sid = nil
+	self.lives = {}
+	self.playing = false
+	self.result_shown = false
 	self.start_at = net_state.start_at
 	self.done = false
-	net.on("game_started", function(_data)
-		print("game_started received")
+
+	net.on("game_started", function(data)
+		handle_game_started(self, data)
+	end)
+	net.on("egg_spawned", function(data)
+		handle_egg_spawned(self, data)
+	end)
+	net.on("egg_fell", function(data)
+		handle_egg_fell(self, data)
+	end)
+	net.on("player_hit", function(data)
+		handle_player_hit(self, data)
+	end)
+	net.on("lives_update", function(data)
+		handle_lives_update(self, data)
+	end)
+	net.on("position_correction", function(data)
+		handle_position_correction(self, data)
+	end)
+	net.on("player_moved", function(data)
+		handle_player_moved(self, data)
+	end)
+	net.on("game_over", function(data)
+		handle_game_over(self, data)
 	end)
 end
 
-function update(self)
-	net.poll()
+function update(self, dt)
+	if self.playing and not net.is_connected() then
+		print("game: connection lost")
+		handle_connection_lost(self)
+		return
+	end
+	update_countdown(self)
+end
+
+function on_message(self, message_id, message)
+	if message_id == NET_EVENT then
+		net.handle(message.event, message.payload)
+	end
+end
+
+function final(self)
+	net.clear()
+end
+
+function on_input(self, action_id, action)
+	if not action.pressed or not self.result_shown then
+		return
+	end
+	msg.post(MENU_URL, RETURN_TO_MENU)
+end
+
+-- selene: allow(unused_variable) -- called from update() above, defined after due to Defold callback ordering
+function update_countdown(self)
 	if self.start_at == nil or self.done then
 		return
 	end
-
 	local remaining = self.start_at - os.time()
 	local text = "GO"
 	if remaining > 0 then
@@ -24,5 +93,113 @@ function update(self)
 	else
 		self.done = true
 	end
-	msg.post("#countdown", SET_COUNTDOWN, { text = text })
+	msg.post(COUNTDOWN_URL, SET_COUNTDOWN, { text = text })
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_game_started(self, data)
+	local positions = data.positions or {}
+	local lives = data.lives or {}
+	self.opponent_sid = nil
+	for sid, _ in pairs(positions) do
+		if sid ~= self.sid then
+			self.opponent_sid = sid
+		end
+	end
+	if self.opponent_sid == nil then
+		return
+	end
+
+	local own_corner = board.SERVER_POSITION_TO_CORNER[positions[self.sid]]
+	local opponent_corner = board.SERVER_POSITION_TO_CORNER[positions[self.opponent_sid]]
+	self.lives = lives
+
+	msg.post(SELF_URL, SET_CORNER, { corner = own_corner })
+	msg.post(OPPONENT_URL, SET_CORNER, { corner = opponent_corner })
+	msg.post(SELF_URL, SET_RUNNING, { running = true })
+	self.playing = true
+	msg.post(COUNTDOWN_URL, SET_LIVES, { own = lives[self.sid], rival = lives[self.opponent_sid] })
+	print("game: started at " .. own_corner .. " vs " .. opponent_corner)
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_egg_spawned(self, data)
+	local position = data.position
+	local corner = board.SERVER_POSITION_TO_CORNER[position]
+	local target_position = board.position(self.origin, corner)
+	local side = board.OFFSETS[corner].x
+	local spawn_position = vmath.vector3(
+		target_position.x + POSITION_OFFSET.x * side,
+		target_position.y + POSITION_OFFSET.y,
+		0
+	)
+	factory.create("#egg_factory", nil, nil, {
+		spawn_position = spawn_position,
+		target_position = target_position,
+		roll_duration_ms = data.fall_delay * 1000,
+	})
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_egg_fell(self, data)
+	print("game: egg fell at " .. tostring(data.position))
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_player_hit(self, data)
+	if data.sid == self.sid then
+		msg.post(SELF_URL, FLASH)
+	elseif self.opponent_sid ~= nil and data.sid == self.opponent_sid then
+		msg.post(OPPONENT_URL, FLASH)
+	end
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_lives_update(self, data)
+	self.lives = data.lives
+	msg.post(COUNTDOWN_URL, SET_LIVES, { own = self.lives[self.sid], rival = self.lives[self.opponent_sid] })
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_position_correction(self, data)
+	local corner = board.SERVER_POSITION_TO_CORNER[data.position]
+	if corner ~= nil then
+		msg.post(SELF_URL, SET_CORNER, { corner = corner })
+	end
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_player_moved(self, data)
+	if self.opponent_sid ~= nil and data.sid == self.opponent_sid then
+		local corner = board.SERVER_POSITION_TO_CORNER[data.position]
+		if corner ~= nil then
+			msg.post(OPPONENT_URL, SET_CORNER, { corner = corner })
+		end
+	end
+end
+
+-- selene: allow(unused_variable) -- net callbacks above, defined after due to Defold callback ordering
+function handle_game_over(self, data)
+	if self.result_shown then
+		return
+	end
+	self.playing = false
+	self.result_shown = true
+	msg.post(SELF_URL, SET_RUNNING, { running = false })
+	local title = data.winner_sid == self.sid and "YOU WIN" or "YOU LOSE"
+	local own_lives = (data.final_lives or {})[self.sid] or 0
+	local rival_lives = (data.final_lives or {})[self.opponent_sid] or 0
+	msg.post(COUNTDOWN_URL, SHOW_RESULT, { title = title, own_lives = own_lives, rival_lives = rival_lives })
+	print("game: over - " .. title)
+end
+
+-- selene: allow(unused_variable) -- called from update() above, defined after due to Defold callback ordering
+function handle_connection_lost(self)
+	if self.result_shown then
+		return
+	end
+	self.playing = false
+	self.result_shown = true
+	msg.post(SELF_URL, SET_RUNNING, { running = false })
+	msg.post(COUNTDOWN_URL, SHOW_RESULT, { title = "CONNECTION LOST", own_lives = 0, rival_lives = 0 })
 end

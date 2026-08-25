@@ -5,17 +5,19 @@ local socket = require("builtins.scripts.socket")
 local config = require("scripts.network.net_config")
 
 local SOCKET_TIMEOUT = 0
+local NET_EVENT = hash("net_event")
 
 local client = nil
 local connected = false
+---@type table<string, {url: url, url_key: string, handler: fun(data: table)}>
 local handlers = {}
 
 local function dispatch(data)
 	local event = data.event
 	local payload = data.data or {}
-	local handler = handlers[event]
-	if handler ~= nil then
-		handler(payload)
+	local entry = handlers[event]
+	if entry ~= nil then
+		msg.post(entry.url, NET_EVENT, { event = event, payload = payload })
 	else
 		print("net: unhandled event: " .. tostring(event))
 	end
@@ -90,8 +92,32 @@ function M.send(event, data)
 	return true
 end
 
+---Register a handler for an event, delivered to this component via on_message.
+---@param event string
+---@param handler fun(data: table)
 function M.on(event, handler)
-	handlers[event] = handler
+	handlers[event] = { url = msg.url(), url_key = tostring(msg.url()), handler = handler }
+end
+
+---Handle a delivered net_event message; call from on_message when
+---message_id == hash("net_event").
+---@param event string
+---@param payload table
+function M.handle(event, payload)
+	local entry = handlers[event]
+	if entry ~= nil then
+		entry.handler(payload)
+	end
+end
+
+---Remove this component's registered handlers; call from final().
+function M.clear()
+	local key = tostring(msg.url())
+	for event, entry in pairs(handlers) do
+		if entry.url_key == key then
+			handlers[event] = nil
+		end
+	end
 end
 
 function M.poll()

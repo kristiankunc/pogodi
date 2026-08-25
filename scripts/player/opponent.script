@@ -1,0 +1,23 @@
+local board = require("scripts.board")
+local flash = require("scripts.player.flash")
+
+local SET_CORNER = hash("set_corner")
+local FLASH = hash("flash")
+local COLOR_OPPONENT = vmath.vector4(0.3, 0.5, 1, 1)
+
+function init(self)
+	self.origin = go.get_position()
+	flash.init(self, "#opponent-label", COLOR_OPPONENT)
+end
+
+function update(self, dt)
+	flash.update(self, dt)
+end
+
+function on_message(self, message_id, message)
+	if message_id == SET_CORNER then
+		go.set_position(board.position(self.origin, message.corner))
+	elseif message_id == FLASH then
+		flash.flash(self)
+	end
+end
