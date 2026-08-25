@@ -61,6 +61,7 @@ jobs:
           java -jar bob.jar \
             --root . \
             --archive \
+            --settings cloud-settings.properties \
             --platform "${{ matrix.platform }}" \
             $ARCH \
             $BF \

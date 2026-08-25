@@ -22,6 +22,10 @@ scale = 0.01
 [html5]
 scale_mode = stretch
 
+[network]
+host = localhost
+port = 8765
+
 [project]
 title = nu-pogodi
 dependencies#0 = https://github.com/britzl/gooey/archive/master.zip
