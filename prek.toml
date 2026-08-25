@@ -8,52 +8,46 @@ rev = "v6.0.0"
 hooks = [
   { id = "trailing-whitespace" },
   { id = "end-of-file-fixer" },
-  {
-    id = "mixed-line-ending",
-    args = ["--fix=lf"]
-  },
+  { id = "mixed-line-ending", args = [
+    "--fix=lf",
+  ] },
   { id = "fix-byte-order-marker" },
   { id = "check-merge-conflict" },
   { id = "check-case-conflict" },
   { id = "check-illegal-windows-names" },
   { id = "detect-private-key" },
-  {
-    id = "check-added-large-files",
-    args = ["--maxkb=5120"]
-  },
+  { id = "check-added-large-files", args = [
+    "--maxkb=5120",
+  ] },
   { id = "check-json" },
   { id = "check-yaml" },
   { id = "check-executables-have-shebangs" },
-  { id = "check-shebang-scripts-are-executable" }
+  { id = "check-shebang-scripts-are-executable" },
 ]
 
 [[repos]]
 repo = "https://github.com/JohnnyMorganz/StyLua"
 rev = "v2.5.2"
 hooks = [
-  {
-    id = "stylua-github",
-    types = ["text"],
-    files = '\.(lua|script|gui_script|render_script|editor_script)$'
-  }
+  { id = "stylua-github", types = [
+    "text",
+  ], files = '\.(lua|script|gui_script|render_script|editor_script)$' },
 ]
+
+[[repos]]
+repo = "https://github.com/shellcheck-py/shellcheck-py"
+rev = "v0.11.0.1"
+hooks = [{ id = "shellcheck" }]
+
+[[repos]]
+repo = "https://github.com/ComPWA/taplo-pre-commit"
+rev = "v0.9.3"
+hooks = [{ id = "taplo-format" }]
 
 [[repos]]
 repo = "local"
 hooks = [
-  {
-    id = "selene",
-    name = "selene (Lua lint)",
-    entry = "selene",
-    language = "system",
-    types = ["text"],
-    files = '\.(lua|script|gui_script|render_script|editor_script)$'
-  },
-  {
-    id = "shellcheck",
-    name = "shellcheck",
-    entry = "shellcheck",
-    language = "system",
-    types = ["shell"]
-  }
+  { id = "selene", name = "selene (Lua lint)", entry = "selene", language = "system", types = [
+    "text",
+  ], files = '\.(lua|script|gui_script|render_script|editor_script)$' },
 ]

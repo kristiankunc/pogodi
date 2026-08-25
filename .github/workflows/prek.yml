@@ -1,0 +1,26 @@
+name: Prek
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Install selene
+        run: |
+          curl -fL -o selene.zip https://github.com/Kampfkarren/selene/releases/download/0.31.0/selene-0.31.0-linux.zip
+          unzip -o selene.zip -d /usr/local/bin
+          chmod +x /usr/local/bin/selene
+          rm selene.zip
+
+      - name: Run prek
+        uses: j178/prek-action@v3.0.0
