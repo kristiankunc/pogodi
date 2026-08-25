@@ -21,6 +21,7 @@ nodes {
   id: "create_lobby_button"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   scale {
@@ -37,6 +38,7 @@ nodes {
   id: "text"
   parent: "create_lobby_button"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
@@ -56,6 +58,7 @@ nodes {
   id: "join_lobby_button"
   inherit_alpha: true
   size_mode: SIZE_MODE_AUTO
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   scale {
@@ -72,6 +75,7 @@ nodes {
   id: "text1"
   parent: "join_lobby_button"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
@@ -90,6 +94,7 @@ nodes {
   type: TYPE_BOX
   id: "lobby_code_input_bg"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   scale {
@@ -105,6 +110,7 @@ nodes {
   id: "lobby_code_input_text"
   parent: "lobby_code_input_bg"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
@@ -120,6 +126,7 @@ nodes {
   font: "ibm_plex_mono"
   id: "status_text"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
@@ -135,6 +142,7 @@ nodes {
   font: "ibm_plex_mono"
   id: "waiting_title"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
@@ -150,6 +158,7 @@ nodes {
   font: "ibm_plex_mono"
   id: "waiting_code"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
@@ -165,11 +174,12 @@ nodes {
   font: "ibm_plex_mono"
   id: "waiting_status"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 nodes {
   position {
-    x: 1903.0
-    y: 1060.0
+    x: 1880.0
+    y: 1040.0
   }
   size {
     x: 12.0
@@ -182,11 +192,14 @@ nodes {
   type: TYPE_BOX
   id: "health_dot"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
 }
 nodes {
   position {
-    x: 1852.0
-    y: 1060.0
+    x: 1859.0
+    y: 1040.0
   }
   scale {
     x: 0.3
@@ -196,11 +209,15 @@ nodes {
     x: 100.0
     y: 40.0
   }
+  pivot: PIVOT_E
   type: TYPE_TEXT
   text: "OFFLINE"
   font: "ibm_plex_mono"
   id: "health_text"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
+  xanchor: XANCHOR_RIGHT
+  yanchor: YANCHOR_TOP
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

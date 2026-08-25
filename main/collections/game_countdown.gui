@@ -22,6 +22,7 @@ nodes {
   font: "ibm_plex_mono"
   id: "countdown_text"
   inherit_alpha: true
+  adjust_mode: ADJUST_MODE_ZOOM
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT
