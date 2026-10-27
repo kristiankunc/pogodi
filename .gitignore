@@ -3,6 +3,7 @@
 /bob.jar
 /build
 /dist
+debug.keystore*
 .externalToolBuilders
 .DS_Store
 Thumbs.db

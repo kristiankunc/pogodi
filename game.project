@@ -28,4 +28,4 @@ port = 8765
 
 [project]
 title = nu-pogodi
-dependencies#0 = https://github.com/britzl/gooey/archive/master.zip
+dependencies#0 = https://github.com/britzl/gooey/archive/refs/tags/10.5.3.zip
