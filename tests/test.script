@@ -1,0 +1,7 @@
+local runner = require("tests.runner")
+local suites = require("tests.suites")
+
+function init(_self)
+	local failed = runner.run(suites)
+	sys.exit(failed == 0 and 0 or 1)
+end

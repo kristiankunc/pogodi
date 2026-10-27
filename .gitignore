@@ -1,6 +1,8 @@
 /.editor_settings
 /.internal
+/bob.jar
 /build
+/dist
 .externalToolBuilders
 .DS_Store
 Thumbs.db
