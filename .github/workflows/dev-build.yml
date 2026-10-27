@@ -26,6 +26,11 @@ jobs:
           path: bob.jar
           key: bob-1.14.0
 
+      - name: Install engine runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libopenal1 libx11-6 libxext6 libxi6
+
       - name: Run tests
         run: tools/test.sh
 
