@@ -1,5 +1,5 @@
 local gooey = require("gooey.gooey")
-local dcolors = require("dcolors.dcolors")
+local color = require("scripts.utils.color")
 local net = require("scripts.network.net")
 local net_state = require("scripts.network.net_state")
 
@@ -10,13 +10,13 @@ local INPUT_CONFIG = {
 	allowed_characters = "[%a]",
 }
 
-local COLOR_TEXT = dcolors.hex_to_rgba("FFFFFFFF")
-local COLOR_PLACEHOLDER = dcolors.hex_to_rgba("808080FF")
-local COLOR_BG_NORMAL = dcolors.hex_to_rgba("292929FF")
-local COLOR_BG_FOCUSED = dcolors.hex_to_rgba("3A5A80FF")
-local COLOR_STATUS = dcolors.hex_to_rgba("FFFFFFFF")
-local COLOR_HEALTH_ONLINE = dcolors.hex_to_rgba("00FF00FF")
-local COLOR_HEALTH_OFFLINE = dcolors.hex_to_rgba("FF0000FF")
+local COLOR_TEXT = color.hex_to_rgba("FFFFFFFF")
+local COLOR_PLACEHOLDER = color.hex_to_rgba("808080FF")
+local COLOR_BG_NORMAL = color.hex_to_rgba("292929FF")
+local COLOR_BG_FOCUSED = color.hex_to_rgba("3A5A80FF")
+local COLOR_STATUS = color.hex_to_rgba("FFFFFFFF")
+local COLOR_HEALTH_ONLINE = color.hex_to_rgba("00FF00FF")
+local COLOR_HEALTH_OFFLINE = color.hex_to_rgba("FF0000FF")
 
 local STATUS_NODE = hash("status_text")
 local CREATE_BUTTON = hash("create_lobby_button")
